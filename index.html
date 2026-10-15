@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teamflect Roadmap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="What Teamflect is building next for performance management in Microsoft Teams and Outlook.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: full-page indigo-to-violet gradient (same world as the product roadmap slide), quarter timeline with dots as the main filter, white feature cards floating on the gradient. */
+:root{
+  --grad-a:#34348c; --grad-b:#4f56c6; --grad-c:#8b80dd;
+  --on-grad:#ffffff; --on-grad-soft:#c9ccff; --on-grad-muted:rgba(255,255,255,.72);
+  --glass:rgba(255,255,255,.12); --glass-line:rgba(255,255,255,.32); --ring:rgba(255,255,255,.22);
+  --surface:#ffffff; --fg:#34343a; --heading:#2f3060; --muted:#626282;
+  --accent:#565fc7; --accent-ink:#ffffff; --chip:#ecf0ff; --chip-fg:#464775; --tile:#f5f6fe;
+  --shadow:0 18px 40px -22px rgba(20,18,70,.55);
+  --banner:#ffeeb4; --banner-fg:#4f3d00;
+  --display:"Jost","Trebuchet MS",sans-serif;
+  --body:"Barlow","Trebuchet MS",system-ui,sans-serif;
+  --radius:22px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --grad-a:#15153d; --grad-b:#262a78; --grad-c:#4a4499;
+  --surface:#1c1e3e; --fg:#e4e4f1; --heading:#e9eaff; --muted:#a9abc9;
+  --accent:#8f97f0; --accent-ink:#14153a; --chip:#2b2e5e; --chip-fg:#dfe2ff; --tile:#252852;
+  --shadow:0 18px 40px -22px rgba(0,0,0,.8); --banner:#3a3016; --banner-fg:#f6e3ad; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --grad-a:#15153d; --grad-b:#262a78; --grad-c:#4a4499;
+  --surface:#1c1e3e; --fg:#e4e4f1; --heading:#e9eaff; --muted:#a9abc9;
+  --accent:#8f97f0; --accent-ink:#14153a; --chip:#2b2e5e; --chip-fg:#dfe2ff; --tile:#252852;
+  --shadow:0 18px 40px -22px rgba(0,0,0,.8); --banner:#3a3016; --banner-fg:#f6e3ad; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;color:var(--fg);font:400 17px/1.55 var(--body);min-height:100%;
+  background:var(--grad-b) linear-gradient(135deg,var(--grad-a) 0%,var(--grad-b) 48%,var(--grad-c) 100%)}
+.stage{position:relative;overflow:hidden;min-height:100vh}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.orb.ring{width:760px;height:760px;right:-260px;top:-300px;border:1.5px solid var(--ring)}
+.orb.ring2{width:420px;height:420px;right:80px;top:180px;border:1px solid rgba(255,255,255,.12)}
+.orb.blob{width:520px;height:520px;left:-300px;top:520px;background:rgba(255,255,255,.06)}
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding-block:64px 80px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+header.top{display:grid;gap:18px;margin-bottom:48px}
+.eyebrow{font:500 14px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--on-grad-muted)}
+h1{font:300 clamp(34px,5.2vw,56px)/1.12 var(--display);margin:0;color:var(--on-grad-soft);max-width:22ch;text-wrap:balance}
+h1 b{font-weight:500;color:var(--on-grad)}
+.lede{color:var(--on-grad-muted);max-width:60ch;margin:0}
+
+/* quarter timeline */
+.timeline{overflow-x:auto;margin:0 0 36px;padding-bottom:6px;scrollbar-width:thin}
+.tl{position:relative;display:flex;gap:0;min-width:max-content;padding-top:4px}
+.tl::before{content:"";position:absolute;left:0;right:0;top:20px;height:2px;background:var(--glass-line)}
+.node{position:relative;display:grid;justify-items:start;gap:10px;min-width:150px;padding:0 24px 0 0;
+  background:none;border:0;color:var(--on-grad);font:inherit;text-align:left;cursor:pointer}
+.dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:transparent}
+.dot::before{content:"";width:20px;height:20px;border-radius:50%;background:var(--on-grad);transition:transform .2s ease,box-shadow .2s ease}
+.node[aria-pressed="false"] .dot::before{background:var(--grad-b);border:2px solid var(--on-grad-soft);transform:scale(.8)}
+.node[aria-pressed="true"] .dot::before{box-shadow:0 0 0 8px rgba(255,255,255,.18)}
+.node .q{font:500 13px/1 var(--body);letter-spacing:.16em;text-transform:uppercase}
+.node .n{font-size:14px;color:var(--on-grad-muted);font-variant-numeric:tabular-nums}
+.node:hover .dot::before{transform:scale(1.08)}
+
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
+.search{flex:1 1 300px;min-width:0;position:relative}
+.search input,.select select{width:100%;font:inherit;color:var(--on-grad);background:var(--glass);
+  border:1px solid var(--glass-line);border-radius:999px;padding:12px 18px}
+.search input::placeholder{color:var(--on-grad-muted)}
+.search input{padding-left:46px}
+.search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--on-grad-muted)}
+.select{flex:0 1 280px;min-width:0}
+.select select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:52px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8' fill='none'%3E%3Cpath d='M1 1l6 6 6-6' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 22px center;background-size:14px 8px}
+.select select option{color:#34343a;background:#ffffff}
+.meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--on-grad-muted);font-size:14px;margin-bottom:18px}
+.meta b{color:var(--on-grad);font-weight:600;font-variant-numeric:tabular-nums}
+
+.list{display:grid;gap:22px}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);transition:transform .2s ease}
+.card:hover{transform:translateY(-2px)}
+.card-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px) auto;gap:28px;align-items:center;padding:32px 36px;cursor:pointer}
+.kicker{font:500 13px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.card-title{font:400 clamp(21px,2.3vw,27px)/1.25 var(--display);margin:0;color:var(--heading);text-wrap:balance}
+.status{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-start}
+.label{font:500 12px/1.2 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.value{font-size:17px}
+.value small{display:block;color:var(--muted);font-size:13px}
+.pill{display:inline-block;background:var(--accent);color:var(--accent-ink);font:600 14px/1 var(--display);padding:10px 18px;border-radius:999px}
+.toggle{position:relative;width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--accent-ink);transition:filter .2s ease}
+.card-head:hover .toggle{filter:brightness(1.1)}
+.toggle::before,.toggle::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:2px;border-radius:2px;
+  background:currentColor;transform:translate(-50%,-50%);transition:transform .2s ease}
+.toggle::after{transform:translate(-50%,-50%) rotate(90deg)}
+.card.open .toggle::after{transform:translate(-50%,-50%) rotate(0deg)}
+.card-head:focus-visible,.node:focus-visible,input:focus-visible,select:focus-visible{outline:2px dashed var(--on-grad-soft);outline-offset:4px}
+.card-head:focus-visible{outline-color:var(--accent);border-radius:var(--radius)}
+
+.details{padding:0 36px 32px}
+.desc{max-width:68ch;margin:0;white-space:pre-line;font-size:18px}
+.tiles{display:flex;flex-wrap:wrap;gap:14px}
+.tile{background:var(--tile);border-radius:14px;padding:14px 20px;min-width:0}
+.tile .label{margin-bottom:6px}
+.tile .value{font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
+.empty{text-align:center;color:var(--on-grad);padding:48px 16px;border:1px dashed var(--glass-line);border-radius:var(--radius)}
+footer{margin-top:44px;color:var(--on-grad-muted);font-size:13px}
+
+@media (max-width:860px){
+  .card-head{grid-template-columns:minmax(0,1fr) auto;padding:24px 22px;gap:20px}
+  .status{grid-column:1/-1;grid-row:2}
+  .toggle{grid-column:2;grid-row:1;align-self:start}
+  .details{padding:0 22px 24px}
+  .node{min-width:120px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="stage">
+  <div class="orb ring" aria-hidden="true"></div>
+  <div class="orb ring2" aria-hidden="true"></div>
+  <div class="orb blob" aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="top">
+      <div class="eyebrow">Teamflect product roadmap</div>
+      <h1 id="headline">What we're building next</h1>
+      <p class="lede">Features planned for Teamflect in Microsoft Teams and Outlook. Dates are estimates and can change as development progresses.</p>
+    </header>
+
+    <nav class="timeline" aria-label="Filter by quarter"><div class="tl" id="quarters"></div></nav>
+
+    <section class="controls" aria-label="Search and filter">
+      <label class="search" for="q">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Search features" autocomplete="off" aria-label="Search features">
+      </label>
+      <div class="select">
+        <select id="module" aria-label="Filter by module"><option value="">All modules</option></select>
+      </div>
+    </section>
+
+    <div class="meta"><span>Showing <b id="count">0</b> features</span></div>
+    <div class="list" id="list"></div>
+    <footer>Roadmap items reflect current plans and are not a commitment to deliver a feature on a specific date.</footer>
+  </div>
+</div>
+
+<script id="roadmap-data" type="application/json">{"generated": "2026-10-15", "current": "Q4 2026", "sample": false, "items": []}</script>
+<script>
+(function(){
+  var DATA = JSON.parse(document.getElementById('roadmap-data').textContent);
+  var items = DATA.items || [];
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var state = {q:"", module:"", quarter:""};
+  var $ = function(id){return document.getElementById(id)};
+
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function fmtDate(iso){ if(!iso) return ""; var d=new Date(iso+"T00:00:00"); return isNaN(d)?iso:(MONTHS[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()); }
+  function months(q){ var m=/Q([1-4])\s*(\d{4})/.exec(q||""); if(!m) return ""; var s=(m[1]-1)*3; return MONTHS[s]+" to "+MONTHS[s+2]+" "+m[2]; }
+  function key(q){var m=/Q([1-4])\s*(\d{4})/.exec(q||""); return m? (+m[2])*10 + (+m[1]) : 99999;}
+  function plural(n,w){return n+" "+w+(n===1?"":"s");}
+
+
+  var quarters = Array.from(new Set(items.map(function(i){return i.quarter}))).sort(function(a,b){return key(a)-key(b)});
+  var countIn = function(q){return items.filter(function(i){return i.quarter===q}).length};
+
+  // Headline written from the data, like the slide
+  if (items.length){
+    var nowN = DATA.current ? countIn(DATA.current) : 0, last = quarters[quarters.length-1];
+    $('headline').innerHTML = nowN
+      ? '<b>'+esc(plural(nowN,'feature'))+'</b> '+(nowN===1?'ships':'ship')+' this quarter, <b>'+items.length+'</b> on the roadmap through '+esc(last)
+      : '<b>'+esc(plural(items.length,'feature'))+'</b> on the roadmap through '+esc(last);
+  }
+
+  // Quarter timeline
+  [""].concat(quarters).forEach(function(q){
+    var b=document.createElement('button'); b.type='button'; b.className='node'; b.dataset.q=q;
+    b.setAttribute('aria-pressed', q===""?'true':'false');
+    var label = q==="" ? "All quarters" : (q===DATA.current ? q+" · now" : q);
+    var n = q==="" ? items.length : countIn(q);
+    b.innerHTML='<span class="dot" aria-hidden="true"></span><span class="q">'+esc(label)+'</span><span class="n">'+esc(plural(n,'feature'))+'</span>';
+    b.addEventListener('click',function(){ state.quarter=q;
+      document.querySelectorAll('#quarters .node').forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false')}); render(); });
+    $('quarters').appendChild(b);
+  });
+
+  var modules = Array.from(new Set(items.map(function(i){return i.modules[0]}))).sort();
+  modules.forEach(function(m){ var o=document.createElement('option'); o.value=m; $('module').appendChild(o); });
+  function matches(it, ignoreModule){
+    var q = state.q.trim().toLowerCase();
+    if (!ignoreModule && state.module && it.modules[0]!==state.module) return false;
+    if (state.quarter && it.quarter!==state.quarter) return false;
+    if (q && (it.title+" "+it.description+" "+it.modules[0]+" "+(it.plan||"")+" "+(it.id||"")).toLowerCase().indexOf(q)<0) return false;
+    return true;
+  }
+  function updateCounts(){
+    var pool = items.filter(function(it){return matches(it,true)});
+    Array.from($('module').options).forEach(function(o){
+      var n = o.value ? pool.filter(function(it){return it.modules[0]===o.value}).length : pool.length;
+      o.textContent = (o.value || 'All modules') + ' (' + n + ')';
+    });
+  }
+
+  function cleanTitle(it){ var p=it.modules[0]+":"; return it.title.indexOf(p)===0 ? it.title.slice(p.length).trim() : it.title; }
+  function card(it){
+    return '<article class="card" id="rm-'+esc(it.slug)+'">'+
+      '<div class="card-head" role="button" tabindex="0" aria-expanded="false" aria-controls="d-'+esc(it.slug)+'">'+
+        '<div><div class="kicker">'+esc(it.modules[0])+'</div><h2 class="card-title">'+esc(cleanTitle(it))+'</h2></div>'+
+        '<div class="status">'+
+          '<div><div class="label">Expected release</div><div class="value">'+esc(it.quarter)+'<small>'+esc(months(it.quarter))+'</small></div></div>'+
+          (it.plan ? '<div><div class="label">Included in</div><span class="pill">'+esc(it.plan)+'</span></div>' : '')+
+        '</div>'+
+        '<span class="toggle" aria-hidden="true"></span>'+
+      '</div>'+
+      '<div class="details" id="d-'+esc(it.slug)+'" hidden>'+
+        (it.description ? '<p class="desc">'+esc(it.description)+'</p>' : '')+
+      '</div></article>';
+  }
+
+  function render(){
+    var shown = items.filter(function(it){return matches(it,false)});
+    updateCounts();
+    $('count').textContent = shown.length;
+    $('list').innerHTML = shown.length ? shown.map(card).join('') :
+      '<div class="empty">No features match these filters. Clear the search or pick another quarter.</div>';
+  }
+
+  function toggle(head){
+    var c=head.closest('.card'), d=c.querySelector('.details'), open=!c.classList.contains('open');
+    c.classList.toggle('open',open); d.hidden=!open; head.setAttribute('aria-expanded',String(open));
+  }
+  $('list').addEventListener('click',function(e){var h=e.target.closest('.card-head'); if(h) toggle(h);});
+  $('list').addEventListener('keydown',function(e){var h=e.target.closest('.card-head'); if(h&&(e.key==='Enter'||e.key===' ')){e.preventDefault();toggle(h);}});
+  $('q').addEventListener('input',function(e){state.q=e.target.value;render();});
+  $('module').addEventListener('change',function(e){state.module=e.target.value;render();});
+
+  if (!items.length){
+    document.querySelector('.timeline').hidden = true;
+    document.querySelector('.controls').hidden = true;
+    document.querySelector('.meta').hidden = true;
+    $('list').innerHTML = '<div class="empty">New roadmap items will appear here soon.</div>';
+    return;
+  }
+  render();
+  var h = location.hash.replace('#','');
+  if (h) { var el=document.getElementById(h); if(el){ toggle(el.querySelector('.card-head')); el.scrollIntoView({block:'start'}); } }
+})();
+</script>
+
+</body>
+</html>
